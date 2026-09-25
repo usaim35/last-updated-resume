@@ -1,0 +1,49 @@
+<svg width="400" height="480" viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3a3a3a"/>
+      <stop offset="100%" stop-color="#1a1a1a"/>
+    </linearGradient>
+    <linearGradient id="hoodieGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#242424"/>
+      <stop offset="100%" stop-color="#0d0d0d"/>
+    </linearGradient>
+    <radialGradient id="glowBack" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#f5b942" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#f5b942" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="200" cy="200" r="220" fill="url(#glowBack)"/>
+
+  <!-- Shoulders / Hoodie -->
+  <path d="M 70 480 Q 70 330 130 300 L 270 300 Q 330 330 330 480 Z" fill="url(#hoodieGrad)" stroke="#f5b942" stroke-opacity="0.25" stroke-width="1.5"/>
+  <path d="M 130 300 L 150 340 L 200 320 L 250 340 L 270 300" fill="none" stroke="#f5b942" stroke-opacity="0.3" stroke-width="1.5"/>
+
+  <!-- Neck -->
+  <rect x="175" y="255" width="50" height="55" rx="10" fill="url(#skinGrad)"/>
+
+  <!-- Head -->
+  <ellipse cx="200" cy="190" rx="78" ry="90" fill="url(#skinGrad)"/>
+
+  <!-- Hair -->
+  <path d="M 122 175 Q 110 90 200 75 Q 290 90 278 175 Q 270 130 240 115 Q 250 140 235 150 Q 225 115 200 110 Q 175 115 165 150 Q 150 140 160 115 Q 130 130 122 175 Z" fill="#111111"/>
+
+  <!-- Glasses -->
+  <rect x="130" y="185" width="60" height="42" rx="10" fill="none" stroke="#f5b942" stroke-width="4"/>
+  <rect x="210" y="185" width="60" height="42" rx="10" fill="none" stroke="#f5b942" stroke-width="4"/>
+  <line x1="190" y1="205" x2="210" y2="205" stroke="#f5b942" stroke-width="4"/>
+  <line x1="122" y1="195" x2="130" y2="195" stroke="#f5b942" stroke-width="3"/>
+  <line x1="270" y1="195" x2="278" y2="195" stroke="#f5b942" stroke-width="3"/>
+
+  <!-- Simple face details -->
+  <path d="M 190 250 Q 200 258 210 250" stroke="#0d0d0d" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="155" cy="206" r="5" fill="#0d0d0d"/>
+  <circle cx="245" cy="206" r="5" fill="#0d0d0d"/>
+
+  <!-- Ambient accent particles -->
+  <circle cx="90" cy="100" r="4" fill="#f5b942" opacity="0.6"/>
+  <circle cx="320" cy="140" r="3" fill="#f5b942" opacity="0.5"/>
+  <circle cx="310" cy="260" r="5" fill="#f5b942" opacity="0.4"/>
+  <circle cx="80" cy="260" r="3" fill="#f5b942" opacity="0.5"/>
+</svg>
