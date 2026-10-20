@@ -1,82 +1,60 @@
-import { useState, useCallback } from 'react'
-import { PROFILE } from './data/content.js'
-import { useTheme, useReveal, useHotkey, useCopy } from './lib/hooks.js'
-import Header from './components/Header.jsx'
-import Hero from './components/Hero.jsx'
-import Experience from './components/Experience.jsx'
-import Stack from './components/Stack.jsx'
-import Projects from './components/Projects.jsx'
-import Contact from './components/Contact.jsx'
-import Footer from './components/Footer.jsx'
-import CommandPalette from './components/CommandPalette.jsx'
-import BackToTop from './components/BackToTop.jsx'
-import Icon from './components/Icon.jsx'
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import Lenis from "lenis";
+import { gsap, ScrollTrigger } from "./lib/gsap";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import SparkleCursor from "./components/SparkleCursor";
+import Shield from "./components/Shield";
+import Home from "./pages/Home";
+import CaseStudy from "./pages/CaseStudy";
 
 export default function App() {
-  const [theme, toggleTheme] = useTheme()
-  const [paletteOpen, setPaletteOpen] = useState(false)
-  const [copied, copy] = useCopy()
+  const { pathname, hash } = useLocation();
 
-  useReveal()
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+    const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+    window.__lenis = lenis;
+    lenis.on("scroll", ScrollTrigger.update);
+    const tick = (t) => lenis.raf(t * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("load", refresh);
+    return () => {
+      window.removeEventListener("load", refresh);
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+    };
+  }, []);
 
-  // ⌘K / Ctrl+K from anywhere, "/" when not typing into a field.
-  useHotkey(
-    'mod+k',
-    useCallback(() => setPaletteOpen((v) => !v), []),
-  )
-  useHotkey(
-    '/',
-    useCallback(() => setPaletteOpen(true), []),
-  )
-
-  const copyEmail = useCallback(() => copy(PROFILE.email, 'palette-email'), [copy])
+  useEffect(() => {
+    const l = window.__lenis;
+    const t1 = setTimeout(() => ScrollTrigger.refresh(), 150);
+    let t2;
+    if (hash) {
+      t2 = setTimeout(() => {
+        const el = document.querySelector(hash);
+        if (el) l ? l.scrollTo(el, { duration: 1.2 }) : el.scrollIntoView();
+      }, 350);
+    } else {
+      l ? l.scrollTo(0, { immediate: true }) : window.scrollTo(0, 0);
+    }
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [pathname, hash]);
 
   return (
     <>
-      <a
-        href="#projects"
-        className="sr-only focus:not-sr-only focus:fixed focus:z-[110] focus:top-3 focus:left-3 focus:rounded-xl focus:px-4 focus:py-2.5 focus:grad-bg focus:text-white focus:text-[14px]"
-      >
-        Skip to projects
-      </a>
-
-      <Header theme={theme} toggleTheme={toggleTheme} onOpenPalette={() => setPaletteOpen(true)} />
-
-      <main>
-        <Hero />
-        <Experience />
-        <Stack />
-        <Projects />
-        <Contact />
-      </main>
-
-      <Footer onOpenPalette={() => setPaletteOpen(true)} />
-
-      <BackToTop />
-
-      {paletteOpen && (
-        <CommandPalette
-          onClose={() => setPaletteOpen(false)}
-          theme={theme}
-          toggleTheme={toggleTheme}
-          onCopyEmail={copyEmail}
-        />
-      )}
-
-      {/* Confirmation for the palette's copy action, which happens after the
-          palette has already closed and would otherwise be silent. */}
-      <div
-        role="status"
-        aria-live="polite"
-        className={`fixed z-[95] left-1/2 -translate-x-1/2 bottom-6 flex items-center gap-2 rounded-xl border border-line bg-card px-4 py-2.5 shadow-[var(--shadow)] transition-all duration-300 ${
-          copied === 'palette-email'
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-3 pointer-events-none'
-        }`}
-      >
-        <Icon name="Check" size={15} className="text-ok" />
-        <span className="text-[13.5px] text-fg">Email copied</span>
-      </div>
+      <Shield />
+      <SparkleCursor />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/work/:slug" element={<CaseStudy />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
+      <Footer />
     </>
-  )
+  );
 }

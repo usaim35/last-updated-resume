@@ -1,63 +1,29 @@
-import { PROFILE } from '../data/content.js'
-import { prefersReduced } from '../lib/hooks.js'
-import Icon from './Icon.jsx'
+import { useLocation, useNavigate } from "react-router-dom";
+import { site } from "../data/site";
+import { goTo, LINKS } from "../lib/nav";
+import { Github, Linkedin } from "./Icons";
 
-const LINKS = [
-  { icon: 'Github', href: PROFILE.links.github, label: 'GitHub' },
-  { icon: 'Linkedin', href: PROFILE.links.linkedin, label: 'LinkedIn' },
-  { icon: 'Mail', href: `mailto:${PROFILE.email}`, label: 'Email' },
-]
-
-export default function Footer({ onOpenPalette }) {
-  const toTop = (event) => {
-    event.preventDefault()
-    window.scrollTo({ top: 0, behavior: prefersReduced() ? 'auto' : 'smooth' })
-  }
-
+export default function Footer() {
+  const nav = { pathname: useLocation().pathname, navigate: useNavigate() };
   return (
-    <footer className="border-t border-line py-10">
-      <div className="shell flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-        <div className="min-w-0">
-          <p className="font-display font-semibold text-[15px] text-fg">{PROFILE.name}</p>
-          <p className="mono text-[11px] text-subtle mt-0.5">
-            {PROFILE.title} · {PROFILE.location}
-          </p>
-          <p className="mono text-[11px] text-subtle mt-2">
-            © {new Date().getFullYear()} · Built with React, Vite and Tailwind ·{' '}
-            <button
-              type="button"
-              onClick={onOpenPalette}
-              className="underline decoration-dotted underline-offset-2 hover:text-fg transition-colors cursor-pointer"
-            >
-              Press ⌘K
-            </button>
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2.5">
-          {LINKS.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.label}
-              className="grid place-items-center h-9 w-9 rounded-xl border border-line text-subtle hover:text-fg hover:border-line2 transition-colors"
-            >
-              <Icon name={link.icon} size={16} />
-            </a>
+    <footer className="bg-black px-6 pb-10 pt-16">
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 md:flex-row md:justify-between">
+        <p className="font-round text-2xl font-semibold">{site.name}</p>
+        <ul className="flex flex-wrap justify-center gap-8 text-white/70">
+          {LINKS.map(([label, hash]) => (
+            <li key={hash}>
+              <a href={hash} onClick={(e) => { e.preventDefault(); goTo(hash, nav); }} className="transition hover:text-crimson">{label}</a>
+            </li>
           ))}
-
-          <a
-            href="#top"
-            onClick={toTop}
-            aria-label="Back to top"
-            className="grid place-items-center h-9 w-9 rounded-xl border border-line text-subtle hover:text-fg hover:border-line2 transition-colors"
-          >
-            <Icon name="ArrowDown" size={16} className="rotate-180" />
-          </a>
+        </ul>
+        <div className="flex gap-3">
+          <a href={site.github} target="_blank" rel="noreferrer" aria-label="GitHub" className="grid h-11 w-11 place-items-center rounded-full bg-white/10 hover:bg-crimson"><Github /></a>
+          <a href={site.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn" className="grid h-11 w-11 place-items-center rounded-full bg-white/10 hover:bg-crimson"><Linkedin /></a>
         </div>
       </div>
+      <p className="mt-14 border-t border-white/10 pt-8 text-center text-sm text-white/45">
+        {"Designed & Developed by Usaim | \u00A9 All Rights Reserved"}
+      </p>
     </footer>
-  )
+  );
 }
