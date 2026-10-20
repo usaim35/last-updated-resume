@@ -13,7 +13,7 @@ export const site = {
 };
 
 export const hero = {
-  image: "/images/hero.jfif",
+  image: "/images/hero.jpg",
   lines: ["I build 3D web experiences, and", "I ship them like real products."],
   tagline:
     "Full-stack developer building WebGL platforms, live dashboards and learning portals with React, Next.js and Three.js.",
