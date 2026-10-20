@@ -1,5 +1,6 @@
 import Hero from "../sections/Hero";
 import Work from "../sections/Work";
+import Marquee from "../sections/Marquee";
 import Journey from "../sections/Journey";
 import Stack from "../sections/Stack";
 import Demo from "../sections/Demo";
@@ -11,6 +12,7 @@ export default function Home() {
     <main>
       <Hero />
       <Work />
+      <Marquee />
       <Journey />
       <Stack />
       <Demo />

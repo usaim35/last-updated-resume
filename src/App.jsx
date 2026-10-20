@@ -6,6 +6,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SparkleCursor from "./components/SparkleCursor";
 import Shield from "./components/Shield";
+import Preloader from "./components/Preloader";
+import ScrollProgress from "./components/ScrollProgress";
 import Home from "./pages/Home";
 import CaseStudy from "./pages/CaseStudy";
 
@@ -36,18 +38,19 @@ export default function App() {
     if (hash) {
       t2 = setTimeout(() => {
         const el = document.querySelector(hash);
-        if (el) l ? l.scrollTo(el, { duration: 1.2 }) : el.scrollIntoView();
+        if (el) { if (l) l.scrollTo(el, { duration: 1.2 }); else el.scrollIntoView(); }
       }, 350);
-    } else {
-      l ? l.scrollTo(0, { immediate: true }) : window.scrollTo(0, 0);
-    }
+    } else if (l) l.scrollTo(0, { immediate: true });
+    else window.scrollTo(0, 0);
     return () => { clearTimeout(t1); clearTimeout(t2); };
   }, [pathname, hash]);
 
   return (
     <>
       <Shield />
+      <Preloader />
       <SparkleCursor />
+      <ScrollProgress />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

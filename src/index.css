@@ -38,4 +38,36 @@ img { -webkit-user-drag: none; user-select: none; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 .glow { animation: glow 4s ease-in-out infinite alternate; }
-@keyframes glow { to { transform: scale(1.06); opacity: .85; } }
+@keyframes glow { to { transform: scale(1.08); opacity: .8; } }
+
+.tilt { transform-style: preserve-3d; will-change: transform; }
+.glare {
+  pointer-events: none; position: absolute; inset: 0; z-index: 5; border-radius: inherit; opacity: 0; transition: opacity .4s;
+  background: radial-gradient(500px circle at var(--gx, 50%) var(--gy, 50%), rgba(255,255,255,.16), transparent 45%);
+}
+.tilt:hover > .glare { opacity: 1; }
+
+.ring-spin { background: conic-gradient(from 0deg, #E63946, transparent 25%, #ff8a93 50%, transparent 75%, #E63946); animation: spin 6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.cube-scene { perspective: 900px; }
+.cube, .cube-spin { transform-style: preserve-3d; }
+.cube-spin { animation: cubespin 16s linear infinite; }
+.cube-scene:hover .cube-spin { animation-play-state: paused; }
+@keyframes cubespin { from { transform: rotateX(-18deg) rotateY(0deg); } to { transform: rotateX(-18deg) rotateY(360deg); } }
+.cube-face { position: absolute; inset: 0; }
+
+.shine {
+  background: linear-gradient(110deg, #fff 35%, #E63946 50%, #fff 65%); background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 5s linear infinite;
+}
+@keyframes shine { from { background-position: 150% 0; } to { background-position: -100% 0; } }
+
+.text-outline { -webkit-text-stroke: 1.5px rgba(255,255,255,.35); color: transparent; }
+
+.scroll-dot { animation: scrolldot 1.8s ease-in-out infinite; }
+@keyframes scrolldot { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(12px); opacity: 0; } 100% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee, .cube-spin, .ring-spin, .shine, .smoke, .glow, .scroll-dot { animation: none !important; }
+}

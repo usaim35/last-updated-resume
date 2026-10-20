@@ -13,7 +13,7 @@ export const site = {
 };
 
 export const hero = {
-  image: "/images/hero.png",
+  image: "/images/hero.jfif",
   lines: ["I build 3D web experiences, and", "I ship them like real products."],
   tagline:
     "Full-stack developer building WebGL platforms, live dashboards and learning portals with React, Next.js and Three.js.",
@@ -23,7 +23,7 @@ export const intro =
   "As a developer I care about both sides of the screen: how a product feels to use and how it holds up in production. Fast, interactive, and built to be maintained.";
 
 export const about = {
-  photo: "/images/profile.png",
+  photo: "/images/profile.jpg",
   paragraphs: [
     "I build at the meeting point of design and engineering - from a 3D product website for a Karachi metal-trim manufacturer to a live crypto signals platform and an international online Quran academy for students around the world.",
     "My focus is interfaces that move: 3D scenes, smooth motion and real-time data, always shipped to production instead of left as a demo.",
@@ -54,7 +54,7 @@ export const ai = [
 ];
 
 export const freelance = {
-  image: "/images/freelance.png",
+  image: "/images/freelance.jpg",
   headline: "Built for clients. Engineered to last. Always shipping.",
   note: "Clear updates, honest timelines and clean code your next developer will thank you for.",
 };
