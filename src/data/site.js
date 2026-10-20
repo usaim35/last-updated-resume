@@ -1,19 +1,19 @@
 // ============================================================
-//  YOUR DETAILS - edit everything marked TODO
+//  YOUR DETAILS - edit anything marked TODO
 // ============================================================
 
 export const site = {
   name: "Muhammad Usaim",
-  email: "your.email@gmail.com",                       // TODO
+  email: "usaimkhan24@gmail.com",
   phone: "+92 300 0000000",                            // TODO
   location: "Karachi, Pakistan",
-  cv: "/cv.pdf",                                       // put your CV at public/cv.pdf
+  cv: "/cv.pdf",
   github: "https://github.com/usaim35",
   linkedin: "https://www.linkedin.com/in/your-handle", // TODO
 };
 
 export const hero = {
-  image: "/images/hero.jpg",
+  image: "/images/hero.png",
   lines: ["I build 3D web experiences, and", "I ship them like real products."],
   tagline:
     "Full-stack developer building WebGL platforms, live dashboards and learning portals with React, Next.js and Three.js.",
@@ -23,18 +23,16 @@ export const intro =
   "As a developer I care about both sides of the screen: how a product feels to use and how it holds up in production. Fast, interactive, and built to be maintained.";
 
 export const about = {
-  photo: "/images/profile.jpg",
-  // TODO: rewrite these two paragraphs in your own words
+  photo: "/images/profile.png",
   paragraphs: [
-    "I build at the meeting point of design and engineering - from a 3D hardware platform for a garment manufacturer to a live crypto trading dashboard and an international online Quran academy for students around the world.",
-    "My focus is interfaces that move: WebGL scenes, smooth motion and real-time data, always shipped to production instead of left as a demo.",
+    "I build at the meeting point of design and engineering - from a 3D product website for a Karachi metal-trim manufacturer to a live crypto signals platform and an international online Quran academy for students around the world.",
+    "My focus is interfaces that move: 3D scenes, smooth motion and real-time data, always shipped to production instead of left as a demo.",
   ],
 };
 
 export const stackIntro =
   "Tools I trust for speed, reliability and a clean workflow, from the first commit to deployment.";
 
-// icon = slug from simpleicons.org (TODO: keep only what you really use)
 export const stack = [
   { name: "React", icon: "react" },
   { name: "Next.js", icon: "nextdotjs" },
@@ -61,45 +59,41 @@ export const freelance = {
   note: "Clear updates, honest timelines and clean code your next developer will thank you for.",
 };
 
-// ============================================================
-//  MAIN PROJECTS (slider + case study pages)
-//  Screenshot size: 1600 x 1000 px (16:10) so nothing gets cropped
-// ============================================================
 export const projects = [
   {
-    slug: "fastener-3d-platform",
-    title: "Industrial Fasteners 3D Platform",
-    image: "/projects/fasteners.jpg",
+    slug: "dynemic-metals",
+    title: "Dynemic Metals",
+    image: "/projects/dynemic.png",
     summary:
-      "A B2B platform for garment hardware - buttons, buckles and rivets - where buyers configure products in real-time 3D and follow every order from factory to delivery.",
+      "A website for a Karachi garment-hardware manufacturer making snap buttons, jeans buttons, rivets, eyelets and buckles since 1999, with a live 3D product preview at its heart.",
     details:
-      "It combines a 3D product configurator, a pneumatic button-fixing simulation, custom logo previews and a global shipping tracker in one experience.",
-    stack: ["React", "Three.js", "React Three Fiber", "GSAP", "Node.js"], // TODO: confirm
-    live: "", // TODO: add link if public
+      "Buyers can explore products in 3D, customise them with their own logo, learn how each part is made and build a quote list to send in one click.",
+    stack: ["React", "Three.js", "Tailwind CSS"],
+    live: "",
     features: [
-      { title: "3D configurator", body: "Switch finish, type and custom logo with realistic metal rendering." },
-      { title: "Pneumatic press simulation", body: "An animated fixing cycle that shows exactly how buttons are attached." },
-      { title: "Global logistics view", body: "Animated shipping routes from Karachi to buyers worldwide." },
-      { title: "Order workflow", body: "Production, quality control and shipping stages in one clear timeline." },
+      { title: "3D product preview", body: "A rotating 3D button with the brand logo engraved, rendered in realistic metal." },
+      { title: "Customise", body: "Buyers see their own logo and finish on the product before ordering." },
+      { title: "Quote list", body: "Add products to a quote list and request pricing in one step." },
+      { title: "Light and dark mode", body: "A theme toggle so the catalogue reads well in any setting." },
     ],
-    gallery: [], // e.g. ["/projects/fasteners-2.jpg"]
+    gallery: [],
     demo: null,
   },
   {
-    slug: "crypto-ai-trading-bot",
-    title: "Crypto AI Trading Dashboard",
-    image: "/projects/crypto.jpg",
+    slug: "mycryptospace",
+    title: "MyCryptoSpace",
+    image: "/projects/crypto.png",
     summary:
-      "A real-time trading dashboard for an AI trading bot: live candlestick charts, bot health monitors, strategy yield cards and wallet connection.",
+      "A crypto signals platform: entry, take-profit and stop-loss signals pushed straight to each member's dashboard the moment they are posted.",
     details:
-      "Market data streams in live over WebSockets so traders see every move as it happens and can pause or run strategies instantly.",
-    stack: ["React", "WebSockets", "Canvas", "Tailwind CSS", "Web3"], // TODO: confirm
+      "Members sign up, log in and follow live trade signals in real time, with no delay between posting and delivery.",
+    stack: ["React", "Node.js", "WebSockets"],
     live: "",
     features: [
-      { title: "Live candlestick charts", body: "Streaming market data rendered smoothly in real time." },
-      { title: "AI bot monitors", body: "Status, win rate, profit and latency for every strategy." },
-      { title: "Yield cards", body: "Clear summaries of returns and risk for each algorithm." },
-      { title: "Wallet connection", body: "Connect a browser wallet in one click." },
+      { title: "Live signals", body: "Entry, TP and SL levels delivered to the dashboard instantly." },
+      { title: "Member accounts", body: "Sign-up and login so each trader has their own dashboard." },
+      { title: "Real-time updates", body: "New signals appear without refreshing the page." },
+      { title: "Onboarding slides", body: "A short intro carousel that explains the platform on the login screen." },
     ],
     gallery: [],
     demo: null,
@@ -107,12 +101,12 @@ export const projects = [
   {
     slug: "roudhatul-quran",
     title: "Roudhatul Quran Academy",
-    image: "/projects/quran.jpg",
+    image: "/projects/quran.png",
     summary:
       "An international online Quran academy with live one-on-one classes, a digital Noorani Qaida, Quran with English and Urdu translation, audio recitation and a student dashboard.",
     details:
       "Built end to end: course pages, multi-currency pricing, free learning tools that need no sign-in, and enrollment for students in any time zone.",
-    stack: ["Next.js", "Tailwind CSS", "Vercel"], // TODO: confirm
+    stack: ["Next.js", "Tailwind CSS", "Vercel"],
     live: "https://rozatulquran.vercel.app/",
     features: [
       { title: "Digital Noorani Qaida", body: "Page-by-page reader with zoom and go-to-page controls." },
@@ -121,12 +115,44 @@ export const projects = [
       { title: "Courses and dashboard", body: "Noorani Qaida, Tajweed and Hifz courses, pricing in six currencies and a student portal." },
     ],
     gallery: [],
-    // Optional "Try it" box. Example:
-    // demo: { heading: "Explore the student dashboard", text: "Sign in with the read-only account.", email: "demo@example.com", password: "ViewOnly123", url: "https://..." },
+    demo: null,
+  },
+  {
+    slug: "sick-store",
+    title: "Sick E-commerce Store",
+    image: "/projects/store.png",
+    summary:
+      "A fashion and accessories online store with product search, categories for men, women, jewelry and perfume, a wishlist, a cart and currency and language switching.",
+    details:
+      "Designed to make browsing feel effortless, from the hero offers down to the cart.",
+    stack: ["HTML", "CSS", "JavaScript"],
+    live: "",
+    features: [
+      { title: "Product search", body: "Find any product instantly from the search bar." },
+      { title: "Categories", body: "Men's, women's, jewelry, perfume and hot offers." },
+      { title: "Wishlist and cart", body: "Save favourites and track cart items with live counters." },
+      { title: "Currency and language", body: "Switch currency and language from the top bar." },
+    ],
+    gallery: [],
+    demo: null,
+  },
+  {
+    slug: "jazz-cmt",
+    title: "Jazz CMT Portal",
+    image: "/projects/jazz.png",
+    summary:
+      "A secure sign-in portal built for Jazz, one of Pakistan's largest telecom operators.",
+    details:
+      "A clean, focused login experience designed in the Jazz brand identity.",
+    stack: ["HTML", "CSS", "JavaScript"],
+    live: "",
+    features: [
+      { title: "Secure sign-in", body: "Username and password login with a remember-me option." },
+      { title: "Brand-matched design", body: "Built in the Jazz red and yellow identity." },
+    ],
+    gallery: [],
     demo: null,
   },
 ];
 
-// Extra cards for the fanned "Live Demos" deck (optional)
-// { title: "Project name", image: "/projects/name.jpg", link: "https://..." }
 export const practice = [];
