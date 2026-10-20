@@ -202,7 +202,7 @@ export const PROJECTS = [
       'Admin-gated control room wired to live data over REST and server-sent events',
     ],
     tags: ['React 19', 'TypeScript', 'Tailwind 4', 'Framer Motion', 'FastAPI', 'PostgreSQL'],
-    demo: 'https://safezone.fly.dev/',
+    demo: '-',
     code: 'https://github.com/usaim35',
   },
   {
