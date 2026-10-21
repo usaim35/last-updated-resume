@@ -163,6 +163,7 @@ const WELCOME = [
 const FLOW = ["code", "build", "test", "deploy"];
 
 const SECTIONS = ["about", "skills", "experience", "projects", "contact"];
+const SHOW_MS = 4500; // showcase autoplay speed per slide
 
 /* ================================================================ */
 
@@ -469,7 +470,7 @@ function Counter({ to, suffix }) {
 }
 
 /* ---------- Interactive terminal ---------- */
-function Terminal({ onMatrix }) {
+function Terminal({ onMatrix, onShowcase }) {
   const [lines, setLines] = useState([{ t: "sys", v: "usaim-os v3.0 · type 'help' and press Enter" }]);
   const [input, setInput] = useState("");
   const [hist, setHist] = useState([]);
@@ -484,6 +485,7 @@ function Terminal({ onMatrix }) {
       "  skills       tech stack",
       "  experience   work history",
       "  projects     things I built",
+      "  showcase     cinematic project slideshow",
       "  contact      how to reach me",
       "  resume       download my CV",
       "  docker ps    check my status",
@@ -495,6 +497,7 @@ function Terminal({ onMatrix }) {
     skills: () => SKILLS.map((s) => `${s.title}: ${s.items.join(", ")}`),
     experience: () => [...EXPERIENCE].reverse().map((e) => `${e.period}  ${e.role} @ ${e.company}`),
     projects: () => PROJECTS.map((p, i) => `${pad(i + 1)}  ${p.name.padEnd(16)} ${p.type}`),
+    showcase: () => { setTimeout(onShowcase, 400); return ["Launching project showcase..."]; },
     contact: () => [`email:    ${ME.email}`, `phone:    ${ME.phone}`, `location: ${ME.location}`, `github:   ${ME.github}`],
     resume: () => { downloadResume(); return ["Fetching artifact resume.pdf ... done ✓"]; },
     "docker ps": () => ["CONTAINER ID   IMAGE          STATUS", "u5a1m3500001   usaim:latest   Up 3+ years (healthy)"],
@@ -545,7 +548,7 @@ function Terminal({ onMatrix }) {
         </div>
       </div>
       <div className="term-chips">
-        {["help", "projects", "docker ps", "matrix", "sudo hire usaim"].map((c) => (
+        {["help", "showcase", "docker ps", "matrix", "sudo hire usaim"].map((c) => (
           <button key={c} className="mono" onClick={(e) => { e.stopPropagation(); run(c); }}>{c}</button>
         ))}
       </div>
@@ -597,15 +600,36 @@ function Shot({ p, index }) {
     : <div className={`shot-fallback ${index % 2 ? "hue-b" : "hue-a"}`}><span>{p.name[0]}</span></div>;
 }
 
-/* ---------- Project card ---------- */
-function ProjectCard({ p, index, onOpen }) {
-  const spot = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--x", `${e.clientX - r.left}px`);
-    e.currentTarget.style.setProperty("--y", `${e.clientY - r.top}px`);
+/* ---------- Project card (3D tilt + deal-in + explode) ---------- */
+function ProjectCard({ p, index, pos, boom, onOpen }) {
+  const move = (e) => {
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    el.style.setProperty("--x", `${x}px`);
+    el.style.setProperty("--y", `${y}px`);
+    if (canHover()) {
+      el.style.setProperty("--rx", `${(0.5 - y / r.height) * 8}deg`);
+      el.style.setProperty("--ry", `${(x / r.width - 0.5) * 8}deg`);
+    }
+  };
+  const leave = (e) => {
+    e.currentTarget.style.setProperty("--rx", "0deg");
+    e.currentTarget.style.setProperty("--ry", "0deg");
+  };
+  const a = pos * 2.4;
+  const vars = {
+    "--bx": `${Math.cos(a) * 120}vw`,
+    "--by": `${Math.sin(a) * 120}vh`,
+    "--br": `${(pos % 2 ? 1 : -1) * (200 + pos * 45)}deg`,
+    "--bry": `${pos % 2 ? 180 : -180}deg`,
+    "--bd": `${pos * 0.05}s`,
+    "--d": `${pos * 0.09}s`,
+    "--dz": `${pos % 2 ? 7 : -7}deg`,
   };
   return (
-    <div className="pcard hoverable" role="button" tabIndex={0} onMouseMove={spot}
+    <div className={`pcard hoverable ${boom ? "boom" : ""}`} style={vars} role="button" tabIndex={0}
+      onMouseMove={move} onMouseLeave={leave}
       onClick={() => onOpen(index)} onKeyDown={(e) => e.key === "Enter" && onOpen(index)}>
       <div className="browser">
         <div className="browser-bar">
@@ -630,29 +654,36 @@ function ProjectCard({ p, index, onOpen }) {
   );
 }
 
-/* ---------- Projects grid with filters ---------- */
-function Projects({ onOpen }) {
+/* ---------- Projects grid with filters + showcase button ---------- */
+function Projects({ onOpen, boom, onShowcase }) {
   const cats = ["All", ...new Set(PROJECTS.map((p) => p.category))];
   const [cat, setCat] = useState("All");
   const list = cat === "All" ? PROJECTS : PROJECTS.filter((p) => p.category === cat);
   return (
     <>
-      <div className="filters reveal">
-        {cats.map((c) => (
-          <button key={c} className={`filter ${cat === c ? "active" : ""}`} onClick={() => setCat(c)}>
-            {c}<span className="count">{c === "All" ? PROJECTS.length : PROJECTS.filter((p) => p.category === c).length}</span>
-          </button>
-        ))}
+      <div className="ptools reveal">
+        <div className="filters">
+          {cats.map((c) => (
+            <button key={c} className={`filter ${cat === c ? "active" : ""}`} onClick={() => setCat(c)}>
+              {c}<span className="count">{c === "All" ? PROJECTS.length : PROJECTS.filter((p) => p.category === c).length}</span>
+            </button>
+          ))}
+        </div>
+        <button className="btn play-btn" onClick={() => onShowcase(list)}>
+          <span className="play-ico">▶</span> Showcase mode
+        </button>
       </div>
       <div className="pgrid reveal">
-        {list.map((p) => <ProjectCard key={p.name} p={p} index={PROJECTS.indexOf(p)} onOpen={onOpen} />)}
+        {list.map((p, pos) => (
+          <ProjectCard key={p.name} p={p} index={PROJECTS.indexOf(p)} pos={pos} boom={boom} onOpen={onOpen} />
+        ))}
       </div>
     </>
   );
 }
 
-/* ---------- Project popup ---------- */
-function ProjectModal({ index, onClose, onNav }) {
+/* ---------- Project popup (dice roll + cube turn) ---------- */
+function ProjectModal({ index, dir, onClose, onNav }) {
   const p = PROJECTS[index];
   useEffect(() => {
     const k = (e) => {
@@ -664,9 +695,10 @@ function ProjectModal({ index, onClose, onNav }) {
     document.body.style.overflow = "hidden";
     return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ""; };
   }, [onClose, onNav]);
+  const anim = dir === 0 ? "dice" : dir > 0 ? "turn-next" : "turn-prev";
   return (
     <div className="modal" onClick={onClose}>
-      <div className="modal-box" key={index} onClick={(e) => e.stopPropagation()}>
+      <div className={`modal-box ${anim}`} key={index} onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
         <div className="modal-shot"><Shot p={p} index={index} /></div>
         <div className="modal-body">
@@ -685,6 +717,78 @@ function ProjectModal({ index, onClose, onNav }) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ---------- Showcase: cinematic one-by-one slider ---------- */
+function Showcase({ list, onClose }) {
+  const [i, setI] = useState(0);
+  const [dir, setDir] = useState(1);
+  const [play, setPlay] = useState(true);
+  const n = list.length;
+
+  const go = useCallback((d) => { setDir(d); setI((x) => (x + d + n) % n); }, [n]);
+
+  useEffect(() => {
+    if (!play) return;
+    const t = setTimeout(() => go(1), SHOW_MS);
+    return () => clearTimeout(t);
+  }, [i, play, go]);
+
+  useEffect(() => {
+    const k = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") go(1);
+      if (e.key === "ArrowLeft") go(-1);
+      if (e.key === " ") { e.preventDefault(); setPlay((p) => !p); }
+    };
+    window.addEventListener("keydown", k);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ""; };
+  }, [go, onClose]);
+
+  const p = list[i];
+  const idx = PROJECTS.indexOf(p);
+
+  return (
+    <div className="show">
+      <div className="show-bg" key={`bg${i}`} style={{ backgroundImage: `url(${p.image})` }} />
+      <div className="show-top mono">
+        <span>showcase · {pad(i + 1)} / {pad(n)}</span>
+        <div>
+          <button onClick={() => setPlay((x) => !x)}>{play ? "❚❚ pause" : "▶ play"}</button>
+          <button onClick={onClose}>✕ close</button>
+        </div>
+      </div>
+
+      <div className="show-stage">
+        <div className={`show-slide ${dir > 0 ? "next" : "prev"}`} key={i}>
+          <div className="show-shot"><Shot p={p} index={idx} /></div>
+          <div className="show-info">
+            <span className="mono show-cat">{pad(idx + 1)} · {p.category}</span>
+            <h3>
+              {p.name.split("").map((c, k) => (
+                <span key={k} style={{ animationDelay: `${0.35 + k * 0.035}s` }}>{c === " " ? "\u00A0" : c}</span>
+              ))}
+            </h3>
+            <p className="modal-type">{p.type}</p>
+            <p className="show-desc">{p.desc}</p>
+            <div className="tags show-tags">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
+            {hasLink(p.live) && <a className="btn btn-small" href={p.live} target="_blank" rel="noreferrer">Visit live site ↗</a>}
+          </div>
+        </div>
+      </div>
+
+      <button className="show-arrow l" onClick={() => go(-1)} aria-label="Previous project">←</button>
+      <button className="show-arrow r" onClick={() => go(1)} aria-label="Next project">→</button>
+
+      <div className="show-dots">
+        {list.map((_, k) => (
+          <button key={k} className={k === i ? "on" : ""} onClick={() => { setDir(k > i ? 1 : -1); setI(k); }} aria-label={`Project ${k + 1}`} />
+        ))}
+      </div>
+      {play && <div className="show-progress" key={`p${i}`} style={{ animationDuration: `${SHOW_MS}ms` }} />}
     </div>
   );
 }
@@ -780,16 +884,32 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [imgOk, setImgOk] = useState(true);
   const [openProject, setOpenProject] = useState(null);
+  const [mdir, setMdir] = useState(0);
   const [palette, setPalette] = useState(false);
   const [matrix, setMatrix] = useState(false);
   const [active, setActive] = useState("");
+  const [boom, setBoom] = useState(false);
+  const [showList, setShowList] = useState(null);
   const toastTimer = useRef(null);
+  const boomTimer = useRef(null);
 
   const done = useCallback(() => setLoaded(true), []);
+  const openP = useCallback((i) => { setMdir(0); setOpenProject(i); }, []);
   const closeProject = useCallback(() => setOpenProject(null), []);
-  const navProject = useCallback((d) => setOpenProject((i) => (i + d + PROJECTS.length) % PROJECTS.length), []);
+  const navProject = useCallback((d) => { setMdir(d); setOpenProject((i) => (i + d + PROJECTS.length) % PROJECTS.length); }, []);
   const endMatrix = useCallback(() => setMatrix(false), []);
   const startMatrix = useCallback(() => setMatrix(true), []);
+  const startShowcase = useCallback((list) => {
+    setBoom(true);
+    clearTimeout(boomTimer.current);
+    boomTimer.current = setTimeout(() => setShowList(list && list.length ? list : PROJECTS), 850);
+  }, []);
+  const endShowcase = useCallback(() => {
+    setShowList(null);
+    clearTimeout(boomTimer.current);
+    boomTimer.current = setTimeout(() => setBoom(false), 150);
+  }, []);
+  const showcaseAll = useCallback(() => startShowcase(PROJECTS), [startShowcase]);
   const showToast = useCallback((m) => {
     setToast(m);
     clearTimeout(toastTimer.current);
@@ -853,7 +973,8 @@ export default function App() {
 
   const actions = [
     ...SECTIONS.map((id) => ({ icon: "→", label: `Go to ${id[0].toUpperCase() + id.slice(1)}`, run: () => go(id) })),
-    ...PROJECTS.map((p, i) => ({ icon: "◎", label: `Open project: ${p.name}`, run: () => setOpenProject(i) })),
+    { icon: "▶", label: "Play project showcase", run: showcaseAll },
+    ...PROJECTS.map((p, i) => ({ icon: "◎", label: `Open project: ${p.name}`, run: () => openP(i) })),
     { icon: "◐", label: "Toggle dark / light mode", run: () => setTheme((t) => (t === "dark" ? "light" : "dark")) },
     { icon: "↓", label: "Download resume", run: downloadResume },
     { icon: "@", label: "Copy email address", run: copyEmail },
@@ -966,7 +1087,7 @@ export default function App() {
               <p className="lead dim">Don't want to read? Talk to the terminal instead. It knows everything about me.</p>
             </div>
             <div className="reveal" style={{ transitionDelay: ".15s" }}>
-              <Terminal onMatrix={startMatrix} />
+              <Terminal onMatrix={startMatrix} onShowcase={showcaseAll} />
             </div>
           </div>
         </section>
@@ -1007,7 +1128,7 @@ export default function App() {
           <div className="container">
             <p className="label reveal">Selected work</p>
             <h2 className="title reveal">Projects that <em>made it to production</em>.</h2>
-            <Projects onOpen={setOpenProject} />
+            <Projects onOpen={openP} boom={boom} onShowcase={startShowcase} />
           </div>
         </section>
 
@@ -1060,7 +1181,8 @@ export default function App() {
       </footer>
 
       <BackToTop />
-      {openProject !== null && <ProjectModal index={openProject} onClose={closeProject} onNav={navProject} />}
+      {openProject !== null && <ProjectModal index={openProject} dir={mdir} onClose={closeProject} onNav={navProject} />}
+      {showList && <Showcase list={showList} onClose={endShowcase} />}
       <Palette open={palette} setOpen={setPalette} actions={actions} />
       {matrix && <Matrix onDone={endMatrix} />}
       <div className={`toast ${toast ? "show" : ""}`}>{toast}</div>
