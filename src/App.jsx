@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
    ================================================================ */
 const RESUME_FILE = "/cv.pdf"; // your resume inside /public
 const PHOTO = "/images/hero.jpg"; // your photo inside /public/images
+const AVATAR = "/images/avatar.png"; // optional 3D avatar for the intro (falls back to PHOTO)
 
 const ME = {
   first: "Muhammad",
@@ -145,13 +146,21 @@ const STATS = [
   { to: 3, suffix: "", label: "Companies worked with" },
 ];
 
-const BOOT = [
-  "$ git clone github.com/usaim35/portfolio",
-  "$ npm install --silent",
-  "$ docker build -t usaim:latest .",
-  "$ deploying to production...",
-  "✓ Live. Welcome!",
+const WELCOME = [
+  { w: "Welcome", l: "English" },
+  { w: "خوش آمدید", l: "اردو", rtl: true },
+  { w: "Bienvenue", l: "Français" },
+  { w: "أهلاً وسهلاً", l: "العربية", rtl: true },
+  { w: "Bienvenido", l: "Español" },
+  { w: "Willkommen", l: "Deutsch" },
+  { w: "Hoş geldiniz", l: "Türkçe" },
+  { w: "स्वागत है", l: "हिन्दी" },
+  { w: "ようこそ", l: "日本語" },
+  { w: "欢迎", l: "中文" },
+  { w: "Benvenuto", l: "Italiano" },
+  { w: "Welcome", l: "English" },
 ];
+const FLOW = ["code", "build", "test", "deploy"];
 
 const SECTIONS = ["about", "skills", "experience", "projects", "contact"];
 
@@ -173,25 +182,69 @@ const hostOf = (p) => {
 };
 const hasLink = (u) => u && u !== "#";
 
-/* ---------- Loader ---------- */
+/* ---------- Loader (3D welcome intro) ---------- */
 function Loader({ onDone }) {
-  const [step, setStep] = useState(0);
-  const [hide, setHide] = useState(false);
+  const [pct, setPct] = useState(0);
+  const [exit, setExit] = useState(false);
+  const [src, setSrc] = useState(AVATAR);
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
+
   useEffect(() => {
-    if (step < BOOT.length) {
-      const t = setTimeout(() => setStep((s) => s + 1), 360);
-      return () => clearTimeout(t);
-    }
-    const t1 = setTimeout(() => setHide(true), 300);
-    const t2 = setTimeout(onDone, 1000);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, [step, onDone]);
+    let raf, start;
+    const timers = [];
+    const DUR = 3400;
+    const tick = (t) => {
+      if (!start) start = t;
+      const p = Math.min((t - start) / DUR, 1);
+      setPct(Math.round((1 - Math.pow(1 - p, 2.2)) * 100));
+      if (p < 1) raf = requestAnimationFrame(tick);
+      else {
+        timers.push(setTimeout(() => setExit(true), 350));
+        timers.push(setTimeout(() => doneRef.current(), 1500));
+      }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(raf); timers.forEach(clearTimeout); };
+  }, []);
+
+  const idx = Math.min(WELCOME.length - 1, Math.floor(pct / (100 / WELCOME.length)));
+  const word = WELCOME[idx];
+  const stageIdx = pct >= 100 ? 4 : Math.floor(pct / 25);
+  const status = pct >= 100 ? "deployed · live ✓" : `pipeline: ${FLOW[stageIdx]}...`;
+
   return (
-    <div className={`loader ${hide ? "hide" : ""}`}>
-      <div className="loader-box mono">
-        {BOOT.slice(0, step).map((l, i) => <div key={i} className={l.startsWith("✓") ? "ok" : ""}>{l}</div>)}
-        <span className="caret">▋</span>
-        <div className="loader-bar"><span style={{ width: `${(step / BOOT.length) * 100}%` }} /></div>
+    <div className={`intro ${exit ? "exit" : ""}`}>
+      <div className="intro-half top" />
+      <div className="intro-half bottom" />
+      <div className="intro-content">
+        <div className="intro-floor" />
+        <div className="intro-glow" />
+        <div className="intro-bar mono"><span>MU / portfolio</span><span>Karachi, PK</span></div>
+
+        <div className="intro-stage">
+          <div className="gyro g1" /><div className="gyro g2" /><div className="gyro g3" />
+          <div className="intro-avatar">
+            {src
+              ? <img src={src} alt="" onError={() => setSrc(src === AVATAR ? PHOTO : null)} />
+              : <span>MU</span>}
+          </div>
+          <div className="orbit">
+            {FLOW.map((f, i) => (
+              <span key={f} className={`orbit-chip mono ${stageIdx > i ? "done" : stageIdx === i ? "on" : ""}`} style={{ "--i": i }}>
+                {stageIdx > i ? "✓ " : ""}{f}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="intro-word-wrap">
+          <span key={`w${idx}`} className="intro-word" dir={word.rtl ? "rtl" : "ltr"}>{word.w}</span>
+          <span key={`l${idx}`} className="intro-lang mono">{word.l}</span>
+        </div>
+
+        <div className="intro-foot mono"><i className="pulse" /> {status}</div>
+        <div className="intro-pct">{pct}<sup>%</sup></div>
       </div>
     </div>
   );
