@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+﻿import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "./lib/gsap";
