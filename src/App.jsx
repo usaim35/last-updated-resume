@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /* ================================================================
    ✏️  EDIT YOUR INFO HERE — the whole site is built from this data
@@ -27,13 +27,9 @@ const SKILLS = [
   { title: "Databases", icon: "◉", items: ["SQL Server", "PostgreSQL", "MongoDB", "MySQL"] },
 ];
 
-// Oldest first, so the pipeline ends at your current job
 const EXPERIENCE = [
   {
-    stage: "build",
-    role: "Software Developer",
-    company: "Fiztech",
-    period: "2022 – 2023",
+    stage: "build", role: "Software Developer", company: "Fiztech", period: "2022 – 2023",
     points: [
       "Developed and maintained client-facing web apps with modern JavaScript frameworks and Node.js.",
       "Took part in the full lifecycle, from requirements gathering to final deployment.",
@@ -41,10 +37,7 @@ const EXPERIENCE = [
     tags: ["JavaScript", "Node.js", "Express", "REST APIs"],
   },
   {
-    stage: "scale",
-    role: "Software Developer",
-    company: "Dev Studio",
-    period: "2023 – 2024",
+    stage: "scale", role: "Software Developer", company: "Dev Studio", period: "2023 – 2024",
     points: [
       "Architected and deployed full-stack web apps with ASP.NET Core, React.js and REST APIs.",
       "Built responsive frontends and robust backend services in an agile team.",
@@ -52,11 +45,7 @@ const EXPERIENCE = [
     tags: ["ASP.NET Core", "React.js", "SQL Server", "REST APIs"],
   },
   {
-    stage: "deploy",
-    role: "Junior DevOps Engineer",
-    company: "EOcean Private Limited",
-    period: "2024 – Present",
-    current: true,
+    stage: "deploy", role: "Junior DevOps Engineer", company: "EOcean Private Limited", period: "2024 – Present", current: true,
     points: [
       "Automate end-to-end CI/CD pipelines and container workflows with Docker and Jenkins.",
       "Maintain server infrastructure and health monitoring for high availability and smooth releases.",
@@ -66,24 +55,80 @@ const EXPERIENCE = [
   },
 ];
 
+/* 👉 Paste each project's real live link where it says "#" (TODO) */
 const PROJECTS = [
+  {
+    name: "SafeZone",
+    type: "Community Emergency Help Platform",
+    category: "Web App",
+    image: "/projects/safezone.png",
+    live: "#", // TODO
+    desc: "An emergency help platform for Karachi. People describe a flood, fire, medical or other emergency in a single WhatsApp message, in English, Urdu or Roman Urdu, with no account or form. It covers 78 areas across all seven districts, sends a first reply in under five seconds and hands each case to someone who can act. Includes a scan-to-WhatsApp QR code, an 'Ask SafeZone' chat assistant and dark mode.",
+    tags: ["WhatsApp", "Multilingual", "Chat assistant", "Dark mode"],
+  },
+  {
+    name: "Roudhatul Quran",
+    type: "Online Quran Tutoring Platform",
+    category: "Web App",
+    image: "/projects/roudhatul-quran.png",
+    live: "#", // TODO
+    desc: "A platform for live one-on-one online Quran classes for every age and level: Noorani Qaida, Tajweed, Hifz, Tafseer and Islamic Studies. Features course listings, pricing plans, a free-trial flow, free learning resources, a blog, sign-in and sign-up, WhatsApp chat and light/dark themes.",
+    tags: ["Courses", "Auth", "Pricing plans", "Blog"],
+  },
+  {
+    name: "Dynemic Metals",
+    type: "Manufacturer Website & Quote System",
+    category: "Business",
+    image: "/projects/dynemic-metals.png",
+    live: "#", // TODO
+    desc: "A B2B website for a Karachi metal-trim manufacturer established in 1999, making snap buttons, jeans buttons, rivets, eyelets and buckles. Features an interactive 3D product hero, a product catalogue, a request-a-quote list and dark mode.",
+    tags: ["3D product", "Quote list", "Catalogue", "B2B"],
+  },
+  {
+    name: "MyCryptoSpace",
+    type: "Crypto Signals Dashboard",
+    category: "Dashboard",
+    image: "/projects/mycryptospace.png",
+    live: "#", // TODO
+    desc: "A trading-signals dashboard where entry, take-profit and stop-loss signals are pushed to users the moment they're posted. Includes login and sign-up authentication and an animated feature carousel.",
+    tags: ["Real-time", "Auth", "Dashboard"],
+  },
   {
     name: "EMIJESTY",
     type: "Fashion E-Commerce Storefront",
-    status: "Live project",
+    category: "E-commerce",
+    image: "/projects/emijesty.png",
+    live: "#", // TODO
     desc: "A high-performance e-commerce frontend with dynamic product filtering, responsive sliders and automated Vercel deployment.",
     tags: ["Next.js", "React", "Vercel", "CSS Modules"],
-    links: [{ label: "Live site ↗", href: "#" }], // TODO: paste your live link
-    hue: "a",
+  },
+  {
+    name: "Sick",
+    type: "Fashion & Accessories Store",
+    category: "E-commerce",
+    image: "/projects/sick-store.png",
+    live: "#", // TODO
+    desc: "An online fashion store with product search, categories for men, women, jewelry and perfume, a wishlist and cart, currency and language switchers, and an animated hero banner.",
+    tags: ["Search", "Cart & wishlist", "Multi-currency"],
   },
   {
     name: "ShopNest",
     type: "Enterprise Full-Stack Store",
-    status: "Full-stack",
+    category: "E-commerce",
+    image: "/projects/shopnest.png",
+    live: "#", // TODO
+    github: "https://github.com/usaim35", // TODO: exact repo link
     desc: "A full-stack store with inventory management, Stripe payment integration and a complete admin panel.",
     tags: ["ASP.NET Core", "React", "SQL Server", "Stripe"],
-    links: [{ label: "GitHub ↗", href: "https://github.com/usaim35" }], // TODO: paste repo link
-    hue: "b",
+  },
+  {
+    name: "Jazz CMT",
+    type: "Enterprise Management Portal",
+    category: "Dashboard",
+    image: "/projects/jazz-cmt.png",
+    live: "#", // TODO
+    desc: "A secure, branded sign-in portal for Jazz's CMT system, with username and password authentication and remember-me sessions.",
+    tags: ["Enterprise", "Auth", "Telecom"],
   },
 ];
 
@@ -95,9 +140,9 @@ const EDUCATION = [
 
 const STATS = [
   { to: 3, suffix: "+", label: "Years shipping code" },
-  { to: 3, suffix: "", label: "Companies worked with" },
+  { to: PROJECTS.length, suffix: "", label: "Projects shipped" },
   { to: 24, suffix: "", label: "Technologies in my stack" },
-  { to: 2, suffix: "", label: "Featured full projects" },
+  { to: 3, suffix: "", label: "Companies worked with" },
 ];
 
 const BOOT = [
@@ -107,6 +152,8 @@ const BOOT = [
   "$ deploying to production...",
   "✓ Live. Welcome!",
 ];
+
+const SECTIONS = ["about", "skills", "experience", "projects", "contact"];
 
 /* ================================================================ */
 
@@ -120,6 +167,11 @@ function downloadResume() {
 }
 
 const canHover = () => window.matchMedia("(hover: hover)").matches;
+const pad = (n) => String(n).padStart(2, "0");
+const hostOf = (p) => {
+  try { return new URL(p.live).host; } catch { return p.name.toLowerCase().replace(/\s+/g, "") + " · live"; }
+};
+const hasLink = (u) => u && u !== "#";
 
 /* ---------- Loader ---------- */
 function Loader({ onDone }) {
@@ -137,9 +189,7 @@ function Loader({ onDone }) {
   return (
     <div className={`loader ${hide ? "hide" : ""}`}>
       <div className="loader-box mono">
-        {BOOT.slice(0, step).map((l, i) => (
-          <div key={i} className={l.startsWith("✓") ? "ok" : ""}>{l}</div>
-        ))}
+        {BOOT.slice(0, step).map((l, i) => <div key={i} className={l.startsWith("✓") ? "ok" : ""}>{l}</div>)}
         <span className="caret">▋</span>
         <div className="loader-bar"><span style={{ width: `${(step / BOOT.length) * 100}%` }} /></div>
       </div>
@@ -171,7 +221,7 @@ function Cursor() {
   return (<><div ref={dot} className="cursor-dot" /><div ref={ring} className="cursor-ring" /></>);
 }
 
-/* ---------- Scroll progress ---------- */
+/* ---------- Scroll progress bar ---------- */
 function ScrollProgress() {
   const ref = useRef(null);
   useEffect(() => {
@@ -184,6 +234,29 @@ function ScrollProgress() {
     return () => window.removeEventListener("scroll", f);
   }, []);
   return <div ref={ref} className="progress" />;
+}
+
+/* ---------- Back to top with progress ring ---------- */
+function BackToTop() {
+  const ring = useRef(null);
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const f = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? window.scrollY / max : 0;
+      setShow(window.scrollY > 600);
+      if (ring.current) ring.current.style.strokeDashoffset = String(126 * (1 - p));
+    };
+    f();
+    window.addEventListener("scroll", f, { passive: true });
+    return () => window.removeEventListener("scroll", f);
+  }, []);
+  return (
+    <button className={`totop ${show ? "show" : ""}`} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Back to top">
+      <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" className="ring-bg" /><circle ref={ring} cx="24" cy="24" r="20" className="ring" /></svg>
+      <span>↑</span>
+    </button>
+  );
 }
 
 /* ---------- 3D tilt ---------- */
@@ -216,9 +289,7 @@ function Magnetic({ children, strength = 0.3 }) {
     if (!canHover()) return;
     const move = (e) => {
       const r = el.getBoundingClientRect();
-      const x = e.clientX - (r.left + r.width / 2);
-      const y = e.clientY - (r.top + r.height / 2);
-      el.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
+      el.style.transform = `translate(${(e.clientX - (r.left + r.width / 2)) * strength}px, ${(e.clientY - (r.top + r.height / 2)) * strength}px)`;
     };
     const leave = () => { el.style.transform = ""; };
     el.addEventListener("mousemove", move);
@@ -241,11 +312,9 @@ function Scramble({ words }) {
       const total = 26;
       const tick = () => {
         f++;
-        setText(
-          target.split("").map((c, k) =>
-            k < (f / total) * target.length || c === " " ? c : chars[Math.floor(Math.random() * chars.length)]
-          ).join("")
-        );
+        setText(target.split("").map((c, k) =>
+          k < (f / total) * target.length || c === " " ? c : chars[Math.floor(Math.random() * chars.length)]
+        ).join(""));
         if (f < total) frame = requestAnimationFrame(tick);
       };
       tick();
@@ -347,10 +416,8 @@ function Counter({ to, suffix }) {
 }
 
 /* ---------- Interactive terminal ---------- */
-function Terminal() {
-  const [lines, setLines] = useState([
-    { t: "sys", v: "usaim-os v3.0 · type 'help' and press Enter" },
-  ]);
+function Terminal({ onMatrix }) {
+  const [lines, setLines] = useState([{ t: "sys", v: "usaim-os v3.0 · type 'help' and press Enter" }]);
   const [input, setInput] = useState("");
   const [hist, setHist] = useState([]);
   const [hi, setHi] = useState(-1);
@@ -367,22 +434,21 @@ function Terminal() {
       "  contact      how to reach me",
       "  resume       download my CV",
       "  docker ps    check my status",
+      "  matrix       ...you'll see",
       "  ls · whoami · date · clear",
       "  psst... try 'sudo hire usaim'",
     ],
     about: () => [ME.summary],
     skills: () => SKILLS.map((s) => `${s.title}: ${s.items.join(", ")}`),
     experience: () => [...EXPERIENCE].reverse().map((e) => `${e.period}  ${e.role} @ ${e.company}`),
-    projects: () => PROJECTS.map((p) => `${p.name}: ${p.type}`),
+    projects: () => PROJECTS.map((p, i) => `${pad(i + 1)}  ${p.name.padEnd(16)} ${p.type}`),
     contact: () => [`email:    ${ME.email}`, `phone:    ${ME.phone}`, `location: ${ME.location}`, `github:   ${ME.github}`],
-    resume: () => { downloadResume(); return ["Fetching artifact Muhammad-Usaim-Resume.pdf ... done ✓"]; },
-    "docker ps": () => [
-      "CONTAINER ID   IMAGE          STATUS",
-      "u5a1m3500001   usaim:latest   Up 3+ years (healthy)",
-    ],
+    resume: () => { downloadResume(); return ["Fetching artifact resume.pdf ... done ✓"]; },
+    "docker ps": () => ["CONTAINER ID   IMAGE          STATUS", "u5a1m3500001   usaim:latest   Up 3+ years (healthy)"],
     ls: () => ["about.txt  skills.json  experience.log  projects/  resume.pdf"],
     whoami: () => ["guest, but you could be my next employer 👀"],
     date: () => [new Date().toString()],
+    matrix: () => { setTimeout(onMatrix, 400); return ["Loading the Matrix..."]; },
     "sudo hire usaim": () => {
       setTimeout(() => { window.location.href = `mailto:${ME.email}?subject=Let's work together`; }, 900);
       return ["[sudo] password for recruiter: ********", "✓ Permission granted. Opening your email app..."];
@@ -404,6 +470,7 @@ function Terminal() {
     else if (e.key === "ArrowUp") { e.preventDefault(); const n = Math.min(hi + 1, hist.length - 1); if (hist[n]) { setHi(n); setInput(hist[n]); } }
     else if (e.key === "ArrowDown") { e.preventDefault(); const n = hi - 1; setHi(Math.max(n, -1)); setInput(n >= 0 ? hist[n] : ""); }
     else if (e.key === "Tab") { e.preventDefault(); const m = Object.keys(cmds).find((k) => k.startsWith(input.toLowerCase())); if (m && input) setInput(m); }
+    e.stopPropagation();
   };
 
   useEffect(() => { if (body.current) body.current.scrollTop = body.current.scrollHeight; }, [lines]);
@@ -416,20 +483,16 @@ function Terminal() {
       </div>
       <div className="term-body mono" ref={body}>
         {lines.map((l, i) => (
-          <div key={i} className={`tl ${l.t}`}>
-            {l.t === "in" && <span className="prompt">guest@usaim:~$ </span>}{l.v}
-          </div>
+          <div key={i} className={`tl ${l.t}`}>{l.t === "in" && <span className="prompt">guest@usaim:~$ </span>}{l.v}</div>
         ))}
         <div className="tl in">
           <span className="prompt">guest@usaim:~$ </span>
-          <input
-            ref={inp} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={onKey}
-            spellCheck="false" autoComplete="off" aria-label="Terminal input"
-          />
+          <input ref={inp} value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={onKey}
+            spellCheck="false" autoComplete="off" aria-label="Terminal input" />
         </div>
       </div>
       <div className="term-chips">
-        {["help", "skills", "docker ps", "resume", "sudo hire usaim"].map((c) => (
+        {["help", "projects", "docker ps", "matrix", "sudo hire usaim"].map((c) => (
           <button key={c} className="mono" onClick={(e) => { e.stopPropagation(); run(c); }}>{c}</button>
         ))}
       </div>
@@ -444,8 +507,7 @@ function Pipeline() {
     const el = ref.current;
     const f = () => {
       const r = el.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (window.innerHeight * 0.6 - r.top) / r.height));
-      el.style.setProperty("--fill", p);
+      el.style.setProperty("--fill", Math.min(1, Math.max(0, (window.innerHeight * 0.6 - r.top) / r.height)));
     };
     f();
     window.addEventListener("scroll", f, { passive: true });
@@ -473,6 +535,176 @@ function Pipeline() {
   );
 }
 
+/* ---------- Project screenshot ---------- */
+function Shot({ p, index }) {
+  const [ok, setOk] = useState(true);
+  useEffect(() => setOk(true), [p.image]);
+  return ok && p.image
+    ? <img src={p.image} alt={`${p.name} preview`} loading="lazy" onError={() => setOk(false)} />
+    : <div className={`shot-fallback ${index % 2 ? "hue-b" : "hue-a"}`}><span>{p.name[0]}</span></div>;
+}
+
+/* ---------- Project card ---------- */
+function ProjectCard({ p, index, onOpen }) {
+  const spot = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--x", `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty("--y", `${e.clientY - r.top}px`);
+  };
+  return (
+    <div className="pcard hoverable" role="button" tabIndex={0} onMouseMove={spot}
+      onClick={() => onOpen(index)} onKeyDown={(e) => e.key === "Enter" && onOpen(index)}>
+      <div className="browser">
+        <div className="browser-bar">
+          <span className="d r" /><span className="d y" /><span className="d g" />
+          <span className="url mono">{hostOf(p)}</span>
+        </div>
+        <div className="shot">
+          <Shot p={p} index={index} />
+          <div className="shot-overlay"><span className="mono">view details →</span></div>
+        </div>
+      </div>
+      <div className="pinfo">
+        <div className="pmeta mono">
+          <span>{pad(index + 1)} · {p.category}</span>
+          <span className="live"><i className="pulse" /> live</span>
+        </div>
+        <h3>{p.name}</h3>
+        <p>{p.type}</p>
+        <div className="tags">{p.tags.slice(0, 3).map((t) => <span key={t}>{t}</span>)}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Projects grid with filters ---------- */
+function Projects({ onOpen }) {
+  const cats = ["All", ...new Set(PROJECTS.map((p) => p.category))];
+  const [cat, setCat] = useState("All");
+  const list = cat === "All" ? PROJECTS : PROJECTS.filter((p) => p.category === cat);
+  return (
+    <>
+      <div className="filters reveal">
+        {cats.map((c) => (
+          <button key={c} className={`filter ${cat === c ? "active" : ""}`} onClick={() => setCat(c)}>
+            {c}<span className="count">{c === "All" ? PROJECTS.length : PROJECTS.filter((p) => p.category === c).length}</span>
+          </button>
+        ))}
+      </div>
+      <div className="pgrid reveal">
+        {list.map((p) => <ProjectCard key={p.name} p={p} index={PROJECTS.indexOf(p)} onOpen={onOpen} />)}
+      </div>
+    </>
+  );
+}
+
+/* ---------- Project popup ---------- */
+function ProjectModal({ index, onClose, onNav }) {
+  const p = PROJECTS[index];
+  useEffect(() => {
+    const k = (e) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowRight") onNav(1);
+      if (e.key === "ArrowLeft") onNav(-1);
+    };
+    window.addEventListener("keydown", k);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", k); document.body.style.overflow = ""; };
+  }, [onClose, onNav]);
+  return (
+    <div className="modal" onClick={onClose}>
+      <div className="modal-box" key={index} onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" onClick={onClose} aria-label="Close">✕</button>
+        <div className="modal-shot"><Shot p={p} index={index} /></div>
+        <div className="modal-body">
+          <span className="mono dim">{pad(index + 1)} / {pad(PROJECTS.length)} · {p.category}</span>
+          <h3>{p.name}</h3>
+          <p className="modal-type">{p.type}</p>
+          <p>{p.desc}</p>
+          <div className="tags">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
+          <div className="modal-actions">
+            {hasLink(p.live) && <a className="btn btn-small" href={p.live} target="_blank" rel="noreferrer">Visit live site ↗</a>}
+            {hasLink(p.github) && <a className="btn btn-small btn-ghost" href={p.github} target="_blank" rel="noreferrer">GitHub ↗</a>}
+          </div>
+          <div className="modal-nav mono">
+            <button onClick={() => onNav(-1)}>← prev</button>
+            <button onClick={() => onNav(1)}>next →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Command palette (Ctrl + K) ---------- */
+function Palette({ open, setOpen, actions }) {
+  const [q, setQ] = useState("");
+  const [sel, setSel] = useState(0);
+  const inp = useRef(null);
+  useEffect(() => {
+    if (open) { setQ(""); setSel(0); setTimeout(() => inp.current?.focus(), 30); }
+  }, [open]);
+  if (!open) return null;
+  const list = actions.filter((a) => a.label.toLowerCase().includes(q.toLowerCase()));
+  const runIt = (a) => { setOpen(false); setTimeout(a.run, 50); };
+  const onKey = (e) => {
+    e.stopPropagation();
+    if (e.key === "ArrowDown") { e.preventDefault(); setSel((x) => Math.min(x + 1, list.length - 1)); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); setSel((x) => Math.max(x - 1, 0)); }
+    else if (e.key === "Enter" && list[sel]) runIt(list[sel]);
+    else if (e.key === "Escape") setOpen(false);
+  };
+  return (
+    <div className="modal palette-wrap" onClick={() => setOpen(false)}>
+      <div className="palette" onClick={(e) => e.stopPropagation()}>
+        <input ref={inp} value={q} onChange={(e) => { setQ(e.target.value); setSel(0); }} onKeyDown={onKey}
+          placeholder="Type a command or search..." aria-label="Command search" />
+        <div className="plist">
+          {list.map((a, k) => (
+            <button key={a.label} className={`pitem ${k === sel ? "sel" : ""}`} onMouseEnter={() => setSel(k)} onClick={() => runIt(a)}>
+              <span>{a.icon}</span>{a.label}
+            </button>
+          ))}
+          {!list.length && <div className="pempty mono">No results</div>}
+        </div>
+        <div className="pfoot mono">↑↓ navigate · enter select · esc close</div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Matrix easter egg ---------- */
+function Matrix({ onDone }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const c = ref.current;
+    const ctx = c.getContext("2d");
+    c.width = window.innerWidth; c.height = window.innerHeight;
+    const fs = 16;
+    const drops = Array(Math.floor(c.width / fs)).fill(1);
+    const chars = "アイウエオカキクケコサシスセソ01USAIM<>{}$#";
+    const iv = setInterval(() => {
+      ctx.fillStyle = "rgba(0,0,0,.08)";
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.fillStyle = "#3dff9a";
+      ctx.font = `${fs}px JetBrains Mono, monospace`;
+      drops.forEach((y, i) => {
+        ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fs, y * fs);
+        if (y * fs > c.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      });
+    }, 40);
+    const t = setTimeout(onDone, 7000);
+    return () => { clearInterval(iv); clearTimeout(t); };
+  }, [onDone]);
+  return (
+    <div className="matrix" onClick={onDone}>
+      <canvas ref={ref} />
+      <div className="matrix-msg mono">You found the easter egg. Now hire Usaim. <small>(click to exit)</small></div>
+    </div>
+  );
+}
+
 /* ---------- Clock ---------- */
 function Clock() {
   const [t, setT] = useState("");
@@ -493,11 +725,18 @@ export default function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
   const [toast, setToast] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const [flipped, setFlipped] = useState({});
   const [imgOk, setImgOk] = useState(true);
+  const [openProject, setOpenProject] = useState(null);
+  const [palette, setPalette] = useState(false);
+  const [matrix, setMatrix] = useState(false);
+  const [active, setActive] = useState("");
   const toastTimer = useRef(null);
 
   const done = useCallback(() => setLoaded(true), []);
+  const closeProject = useCallback(() => setOpenProject(null), []);
+  const navProject = useCallback((d) => setOpenProject((i) => (i + d + PROJECTS.length) % PROJECTS.length), []);
+  const endMatrix = useCallback(() => setMatrix(false), []);
+  const startMatrix = useCallback(() => setMatrix(true), []);
   const showToast = useCallback((m) => {
     setToast(m);
     clearTimeout(toastTimer.current);
@@ -517,20 +756,58 @@ export default function App() {
     return () => window.removeEventListener("scroll", f);
   }, []);
 
+  // reveal on scroll
   useEffect(() => {
     if (!loaded) return;
     const io = new IntersectionObserver(
       (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }),
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
     document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, [loaded]);
 
+  // active nav link
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    SECTIONS.forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    return () => io.disconnect();
+  }, []);
+
+  // Ctrl+K palette + Konami code
+  useEffect(() => {
+    const seq = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+    let pos = 0;
+    const k = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); setPalette((p) => !p); return; }
+      const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      pos = key === seq[pos] ? pos + 1 : key === seq[0] ? 1 : 0;
+      if (pos === seq.length) { setMatrix(true); pos = 0; }
+    };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, []);
+
   const copyEmail = () =>
     navigator.clipboard.writeText(ME.email)
       .then(() => showToast("Email copied to clipboard ✓"))
       .catch(() => showToast(ME.email));
+
+  const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  const actions = [
+    ...SECTIONS.map((id) => ({ icon: "→", label: `Go to ${id[0].toUpperCase() + id.slice(1)}`, run: () => go(id) })),
+    ...PROJECTS.map((p, i) => ({ icon: "◎", label: `Open project: ${p.name}`, run: () => setOpenProject(i) })),
+    { icon: "◐", label: "Toggle dark / light mode", run: () => setTheme((t) => (t === "dark" ? "light" : "dark")) },
+    { icon: "↓", label: "Download resume", run: downloadResume },
+    { icon: "@", label: "Copy email address", run: copyEmail },
+    { icon: "⌥", label: "Open GitHub", run: () => window.open(ME.github, "_blank") },
+    { icon: "✆", label: "Message on WhatsApp", run: () => window.open(ME.whatsapp, "_blank") },
+    { icon: "▦", label: "Enter the Matrix", run: startMatrix },
+  ];
 
   const marquee = SKILLS.flatMap((s) => s.items);
 
@@ -547,10 +824,14 @@ export default function App() {
           <span className="brand-text"><b>{ME.first} {ME.last}</b><small>{ME.location}</small></span>
         </a>
         <nav className="links">
-          <a href="#about">About</a><a href="#skills">Skills</a><a href="#experience">Experience</a>
-          <a href="#projects">Projects</a><a href="#contact">Contact</a>
+          {SECTIONS.map((id) => (
+            <a key={id} href={`#${id}`} className={active === id ? "active" : ""}>{id[0].toUpperCase() + id.slice(1)}</a>
+          ))}
         </nav>
         <div className="nav-actions">
+          <button className="kbd-btn mono" onClick={() => setPalette(true)} aria-label="Open command menu">
+            <span className="k">Ctrl K</span><span className="m">☰ Menu</span>
+          </button>
           <button className="theme-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} aria-label="Toggle theme">
             {theme === "dark" ? "☀" : "☾"}
           </button>
@@ -581,6 +862,9 @@ export default function App() {
                 <Magnetic><a href="#projects" className="btn">View my work →</a></Magnetic>
                 <Magnetic><a href={RESUME_FILE} download="Muhammad-Usaim-Resume.pdf" className="btn btn-ghost">Download Resume ↓</a></Magnetic>
               </div>
+              <p className="hero-tip mono hero-anim" style={{ animationDelay: "1.35s" }}>
+                tip: press <kbd>Ctrl</kbd> + <kbd>K</kbd> to navigate like a developer
+              </p>
             </div>
 
             <div className="hero-right hero-anim" style={{ animationDelay: ".5s" }}>
@@ -629,7 +913,7 @@ export default function App() {
               <p className="lead dim">Don't want to read? Talk to the terminal instead. It knows everything about me.</p>
             </div>
             <div className="reveal" style={{ transitionDelay: ".15s" }}>
-              <Terminal />
+              <Terminal onMatrix={startMatrix} />
             </div>
           </div>
         </section>
@@ -646,7 +930,7 @@ export default function App() {
                     <div className="skill-head">
                       <span className="skill-icon">{s.icon}</span>
                       <h3>{s.title}</h3>
-                      <span className="mono dim">{String(s.items.length).padStart(2, "0")}</span>
+                      <span className="mono dim">{pad(s.items.length)}</span>
                     </div>
                     <div className="chips">{s.items.map((it) => <span key={it} className="hoverable">{it}</span>)}</div>
                   </Tilt>
@@ -670,39 +954,7 @@ export default function App() {
           <div className="container">
             <p className="label reveal">Selected work</p>
             <h2 className="title reveal">Projects that <em>made it to production</em>.</h2>
-            <div className="projects">
-              {PROJECTS.map((p, i) => (
-                <div key={p.name} className="reveal" style={{ transitionDelay: `${i * 0.15}s` }}>
-                  <div
-                    className={`flip hoverable ${flipped[i] ? "flipped" : ""}`}
-                    onClick={() => setFlipped((f) => ({ ...f, [i]: !f[i] }))}
-                  >
-                    <div className="flip-inner">
-                      <div className={`face front hue-${p.hue}`}>
-                        <span className="proj-num mono">0{i + 1}</span>
-                        <div className="blob" />
-                        <div>
-                          <span className="proj-status mono">{p.status}</span>
-                          <h3>{p.name}</h3>
-                          <p>{p.type}</p>
-                          <div className="tags">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
-                          <span className="flip-hint mono">hover or tap to flip ↻</span>
-                        </div>
-                      </div>
-                      <div className="face back">
-                        <span className="mono dim">// {p.name.toLowerCase()}</span>
-                        <p className="proj-desc">{p.desc}</p>
-                        <div className="proj-links">
-                          {p.links.map((l) => (
-                            <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className="btn btn-small" onClick={(e) => e.stopPropagation()}>{l.label}</a>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Projects onOpen={setOpenProject} />
           </div>
         </section>
 
@@ -754,6 +1006,10 @@ export default function App() {
         </div>
       </footer>
 
+      <BackToTop />
+      {openProject !== null && <ProjectModal index={openProject} onClose={closeProject} onNav={navProject} />}
+      <Palette open={palette} setOpen={setPalette} actions={actions} />
+      {matrix && <Matrix onDone={endMatrix} />}
       <div className={`toast ${toast ? "show" : ""}`}>{toast}</div>
     </>
   );
